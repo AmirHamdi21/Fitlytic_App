@@ -1,0 +1,1 @@
+ D:\\DEPI\ Flutter\ Final\ Project\\fitness_dpi\\fitlytic\\.dart_tool\\flutter_build\\9338fcbcf0c236ac4a3f17386bdbcd36\\native_assets.yaml: 

@@ -1,0 +1,15 @@
+# Flutter/Dart/Pub related
+build/
+.pub-cache/
+.pub/
+
+# IDEs and editors
+.idea/
+.vscode/
+
+# Others
+*.iml
+*.apk
+*.ipa
+*.zip
+*.DS_Store
