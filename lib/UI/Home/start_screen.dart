@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               }),
           _hideBottomBarAnimationController),
       body: _bottomNavIndex == 0
-          ? const HomeScreen()
+          ?  HomeScreen()
           : _bottomNavIndex == 1
               ? const ActivityTrackerScreen()
               : _bottomNavIndex == 2

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }

@@ -21,6 +21,12 @@ class MyColors {
       Color.fromARGB(255, 10, 98, 176),
     ],
   );
+  static const Gradient customGradient2 = LinearGradient(
+    colors: [
+      Color.fromARGB(255, 80, 0, 95),
+      Color.fromARGB(255, 4, 66, 121),
+    ],
+  );
 }
 
 

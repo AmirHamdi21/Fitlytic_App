@@ -17,6 +17,11 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width to calculate responsive sizes
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Determine if screen is small (mobile)
+    final isSmallScreen = screenWidth < 600;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1D2A),
@@ -28,7 +33,7 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
               height: 10.0,
             ),
             Text(
-              'Achievements',
+              'Activity Tracker',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -75,9 +80,13 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
                 const SizedBox(height: 24),
 
                 // Metrics Row
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+                SizedBox(
+                  width: double.maxFinite,
+
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceEvenly,
+                    spacing: 16.0,
+                    runSpacing: 24.0,
                     children: [
                       _buildCircularMetric(
                         icon: Icons.directions_walk,
@@ -85,30 +94,31 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
                         value: '8432/10000',
                         progress: 0.84,
                         color: Colors.blue,
+                        isSmallScreen: isSmallScreen,
                       ),
-                      const SizedBox(width: 16),
                       _buildCircularMetric(
                         icon: Icons.local_fire_department,
                         title: 'Calories',
                         value: '420 kcal',
                         progress: 0.42,
                         color: Colors.red,
+                        isSmallScreen: isSmallScreen,
                       ),
-                      const SizedBox(width: 16),
                       _buildCircularMetric(
                         icon: Icons.timer,
                         title: 'Active Minutes',
                         value: '45 min',
                         progress: 0.75,
                         color: Colors.green,
+                        isSmallScreen: isSmallScreen,
                       ),
-                      const SizedBox(width: 16),
                       _buildCircularMetric(
                         icon: Icons.favorite,
                         title: 'Heart Rate',
                         value: '72 bpm',
                         progress: 0.6,
                         color: Colors.pink,
+                        isSmallScreen: isSmallScreen,
                       ),
                     ],
                   ),
@@ -476,18 +486,76 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
     );
   }
 
+  // Widget _buildCircularMetric({
+  //   required IconData icon,
+  //   required String title,
+  //   required String value,
+  //   required double progress,
+  //   required Color color,
+  // }) {
+  //   return Column(
+  //     children: [
+  //       Container(
+  //         width: 80,
+  //         height: 80,
+  //         decoration: const BoxDecoration(
+  //           shape: BoxShape.circle,
+  //           color: Color(0xFF242A38),
+  //         ),
+  //         child: Stack(
+  //           alignment: Alignment.center,
+  //           children: [
+  //             SizedBox(
+  //               width: 70,
+  //               height: 70,
+  //               child: CircularProgressIndicator(
+  //                 value: progress,
+  //                 backgroundColor: Colors.grey.withOpacity(0.2),
+  //                 valueColor: AlwaysStoppedAnimation<Color>(color),
+  //                 strokeWidth: 8,
+  //               ),
+  //             ),
+  //             Icon(icon, color: color),
+  //           ],
+  //         ),
+  //       ),
+  //       const SizedBox(height: 8),
+  //       Text(
+  //         title,
+  //         style: const TextStyle(
+  //           fontSize: 12,
+  //           color: Colors.grey,
+  //         ),
+  //       ),
+  //       Text(
+  //         value,
+  //         style: const TextStyle(
+  //           fontSize: 14,
+  //           fontWeight: FontWeight.bold,
+  //           color: Colors.white, // Added white color
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
   Widget _buildCircularMetric({
     required IconData icon,
     required String title,
     required String value,
     required double progress,
     required Color color,
+    required bool isSmallScreen,
   }) {
+    // Calculate responsive sizes
+    final containerSize = isSmallScreen ? 70.0 : 80.0;
+    final progressSize = isSmallScreen ? 60.0 : 70.0;
+    final iconSize = isSmallScreen ? 22.0 : 24.0;
+
     return Column(
       children: [
         Container(
-          width: 80,
-          height: 80,
+          width: containerSize,
+          height: containerSize,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: Color(0xFF242A38),
@@ -496,8 +564,8 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
             alignment: Alignment.center,
             children: [
               SizedBox(
-                width: 70,
-                height: 70,
+                width: progressSize,
+                height: progressSize,
                 child: CircularProgressIndicator(
                   value: progress,
                   backgroundColor: Colors.grey.withOpacity(0.2),
@@ -505,7 +573,11 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
                   strokeWidth: 8,
                 ),
               ),
-              Icon(icon, color: color),
+              Icon(
+                icon,
+                color: color,
+                size: iconSize,
+              ),
             ],
           ),
         ),
@@ -522,7 +594,7 @@ class _ActivityTrackerTestState extends State<ActivityTrackerScreen> {
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: Colors.white, // Added white color
+            color: Colors.white,
           ),
         ),
       ],

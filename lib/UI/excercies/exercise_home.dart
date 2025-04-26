@@ -227,7 +227,7 @@ class ExerciseListScreen extends StatelessWidget {
         itemCount: exercises.length,
         itemBuilder: (context, index) {
           return ExerciseCard(
-            exercise: exercises[index],
+            exercise: exercises[index], onTap: () {  },
           );
         },
       ),
@@ -240,7 +240,7 @@ class ExerciseCard extends StatelessWidget {
 
   const ExerciseCard({
     super.key,
-    required this.exercise,
+    required this.exercise, required Null Function() onTap,
   });
 
   @override

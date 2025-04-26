@@ -1,85 +1,3 @@
-// import 'package:fitness/widgets/custom_app_bar.dart';
-// import 'package:fitness/widgets/profile/body_info.dart';
-// import 'package:fitness/widgets/profile/user_info.dart';
-// import 'package:flutter/material.dart';
-
-// import '../constants.dart';
-
-// class ProfileUi extends StatefulWidget {
-//   const ProfileUi({super.key});
-
-//   @override
-//   State<ProfileUi> createState() => _NotificationsState();
-// }
-
-// class _NotificationsState extends State<ProfileUi> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white10,
-//       appBar: AppBar(
-//         backgroundColor: Colors.white10,
-//           title: CustomAppBar(
-//         isleadingicon: true,
-//         istrailingicon: true,
-//         title: "Profile",
-//       )),
-//       body: Padding(
-//           padding: const EdgeInsets.only(top: 20.0, left: 6.0, right: 6.0),
-//           child: ListView(
-//             children: [
-//               const UserInfo(),
-//               const SizedBox(
-//                 height: 20.0,
-//               ),
-//               const BodyInfo(),
-//               const SizedBox(
-//                 height: 30.0,
-//               ),
-//               Container(
-//               margin: const EdgeInsets.symmetric(horizontal: 8),
-//               padding: EdgeInsets.only(left: 15.0), // Add spacing
-//               decoration: BoxDecoration(
-//                 color: Colors.red[100],
-//                 // boxShadow: [
-//                 //   BoxShadow(
-//                 //     color: Colors.grey.withOpacity(0.2),
-//                 //     spreadRadius: 2,
-//                 //     blurRadius: 5,
-//                 //     offset: const Offset(0, 2),
-//                 //   ),
-//                 // ],
-//                 borderRadius: BorderRadius.circular(30.0),
-//               ),
-//               height: 100,
-//               width: 110,
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     "Account",
-//                     style: const TextStyle(
-//                         fontSize: 20,
-//                         fontWeight: FontWeight.bold,
-//                         color: Colors.black),
-//                   ),
-//                   Text(
-//                    "asdasd",
-//                     style: const TextStyle(
-//                       fontSize: 16,
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             )
-//             ],
-//           )),
-//     );
-//   }
-// }
-
 import 'package:fitlytic/UI/Profile/achievement_profile.dart';
 import 'package:fitlytic/UI/Profile/personal_info.dart';
 import 'package:fitlytic/UI/Profile/privacy_policy_page.dart';
@@ -101,17 +19,27 @@ class ProfileUi extends StatefulWidget {
 
 class _ProfileUiState extends State<ProfileUi> {
   bool isNotificationEnabled = true;
+  final Color darkBackground = const Color(0xFF1A1D2A);
+  final Color textColor = Colors.white;
+  final Color subtitleColor = Colors.grey.shade400;
+  final Color cardBackground = const Color(0xFF242838);
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Determine if screen is small (mobile)
+    final isSmallScreen = screenWidth < 600;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: darkBackground,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: darkBackground,
+        iconTheme: IconThemeData(color: textColor),
         title: CustomAppBar(
-          isleadingicon: true,
+          isleadingicon: false,
           istrailingicon: true,
           title: "Profile",
+          textColor: textColor,
         ),
       ),
       body: SingleChildScrollView(
@@ -121,25 +49,25 @@ class _ProfileUiState extends State<ProfileUi> {
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundColor: Colors.grey.shade300,
-              child: const Icon(Icons.person, size: 40),
+              backgroundColor: cardBackground,
+              child: Icon(Icons.person, size: 40, color: textColor),
             ),
             const SizedBox(height: 10),
             ShaderMask(
               shaderCallback: (bounds) =>
                   MyColors.customGradient.createShader(bounds),
-              child: const Text(
+              child: Text(
                 "Amir Hamdi",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: textColor,
                 ),
               ),
             ),
-            const Text(
+            Text(
               'Lose a Fat Program',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: subtitleColor),
             ),
             const SizedBox(height: 10),
             Container(
@@ -169,12 +97,27 @@ class _ProfileUiState extends State<ProfileUi> {
               ),
             ),
             const SizedBox(height: 20),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ProfileInfoCard(label: 'Height', value: '180cm'),
-                ProfileInfoCard(label: 'Weight', value: '65kg'),
-                ProfileInfoCard(label: 'Age', value: '22yo'),
+                ProfileInfoCard(
+                  label: 'Height', 
+                  value: '180cm',
+                  textColor: textColor,
+                  subtitleColor: subtitleColor,
+                ),
+                ProfileInfoCard(
+                  label: 'Weight', 
+                  value: '65kg',
+                  textColor: textColor,
+                  subtitleColor: subtitleColor,
+                ),
+                ProfileInfoCard(
+                  label: 'Age', 
+                  value: '22yo',
+                  textColor: textColor,
+                  subtitleColor: subtitleColor,
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -243,7 +186,7 @@ class _ProfileUiState extends State<ProfileUi> {
               }},
             ]),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.11,
+              height: isSmallScreen? MediaQuery.of(context).size.height * 0.11 : MediaQuery.of(context).size.height * 0.26,
             )
           ],
         ),
@@ -260,24 +203,38 @@ class _ProfileUiState extends State<ProfileUi> {
               MyColors.customGradient.createShader(bounds),
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: textColor,
             ),
           ),
         ),
         const SizedBox(height: 10),
-        ...items.map((item) => ListTile(
-              onTap: item['ontap'],
-              leading: ShaderMask(
-                shaderCallback: (bounds) =>
-                    MyColors.customGradient.createShader(bounds),
-                child: Icon(item['icon'], color: Colors.white),
-              ),
-              title: Text(item['title']),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            )),
+        ...items.map((item) => Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          decoration: BoxDecoration(
+            color: cardBackground,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ListTile(
+            onTap: item['ontap'],
+            leading: ShaderMask(
+              shaderCallback: (bounds) =>
+                  MyColors.customGradient.createShader(bounds),
+              child: Icon(item['icon'], color: Colors.white),
+            ),
+            title: Text(
+              item['title'],
+              style: TextStyle(color: textColor),
+            ),
+            trailing: Icon(
+              Icons.arrow_forward_ios, 
+              size: 16, 
+              color: subtitleColor,
+            ),
+          ),
+        )),
       ],
     );
   }
@@ -289,30 +246,41 @@ class _ProfileUiState extends State<ProfileUi> {
         ShaderMask(
           shaderCallback: (bounds) =>
               MyColors.customGradient.createShader(bounds),
-          child: const Text(
+          child: Text(
             'Notification',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: textColor,
             ),
           ),
         ),
         const SizedBox(height: 10),
-        ListTile(
-          leading: ShaderMask(
-            shaderCallback: (bounds) =>
-                MyColors.customGradient.createShader(bounds),
-            child: const Icon(Icons.notifications, color: Colors.white),
+        Container(
+          decoration: BoxDecoration(
+            color: cardBackground,
+            borderRadius: BorderRadius.circular(12),
           ),
-          title: const Text('Pop-up Notification'),
-          trailing: Switch(
-            value: isNotificationEnabled,
-            onChanged: (value) {
-              setState(() {
-                isNotificationEnabled = value;
-              });
-            },
+          child: ListTile(
+            leading: ShaderMask(
+              shaderCallback: (bounds) =>
+                  MyColors.customGradient.createShader(bounds),
+              child: const Icon(Icons.notifications, color: Colors.white),
+            ),
+            title: Text(
+              'Pop-up Notification',
+              style: TextStyle(color: textColor),
+            ),
+            trailing: Switch(
+              value: isNotificationEnabled,
+              onChanged: (value) {
+                setState(() {
+                  isNotificationEnabled = value;
+                });
+              },
+              activeColor: Colors.purple,
+              activeTrackColor: Colors.purple.withOpacity(0.5),
+            ),
           ),
         ),
       ],
@@ -323,31 +291,47 @@ class _ProfileUiState extends State<ProfileUi> {
 class ProfileInfoCard extends StatelessWidget {
   final String label;
   final String value;
+  final Color textColor;
+  final Color subtitleColor;
 
-  const ProfileInfoCard({super.key, required this.label, required this.value});
+  const ProfileInfoCard({
+    super.key, 
+    required this.label, 
+    required this.value,
+    required this.textColor,
+    required this.subtitleColor,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [Colors.blue, Colors.purple],
-          ).createShader(bounds),
-          child: Text(
-            value,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF242838),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          ShaderMask(
+            shaderCallback: (bounds) => const LinearGradient(
+              colors: [Colors.blue, Colors.purple],
+            ).createShader(bounds),
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
             ),
           ),
-        ),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.grey),
-        ),
-      ],
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(color: subtitleColor),
+          ),
+        ],
+      ),
     );
   }
 }

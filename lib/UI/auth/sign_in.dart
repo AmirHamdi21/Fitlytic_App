@@ -1,6 +1,7 @@
 import 'package:fitlytic/UI/auth/membership.dart';
 import 'package:fitlytic/UI/auth/sign_up.dart';
 import 'package:fitlytic/constants/custom_colors.dart';
+import 'package:fitlytic/data/exercise_repository.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -87,10 +88,10 @@ class _LoginPageState extends State<LoginPage> {
                                 return 'Please enter your email';
                               }
 
-                              if(!value.contains("@")){
+                              if (!value.contains("@")) {
                                 return 'Invalid email address';
                               }
-                              if(!value.contains(".com")){
+                              if (!value.contains(".com")) {
                                 return 'Invalid email address';
                               }
                               // Check if email is valid
@@ -227,9 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  // login logic here
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

@@ -1,4 +1,6 @@
 import 'package:fitlytic/UI/Home/start_screen.dart';
+import 'package:fitlytic/UI/Home/workout_completion_screen.dart';
+import 'package:fitlytic/UI/youtub_handing.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/custom_colors.dart';
@@ -7,11 +9,13 @@ class CustomAppBar extends StatelessWidget {
   bool isleadingicon;
   bool istrailingicon;
   String title;
+  Color? textColor;
   CustomAppBar(
       {super.key,
       required this.isleadingicon,
       required this.istrailingicon,
-      required this.title});
+      required this.title,
+      this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -32,24 +36,33 @@ class CustomAppBar extends StatelessWidget {
           : Container(),
       Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
+          color: textColor,
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
       ),
       istrailingicon
-          ? Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: MyColors.grey3
-            ),
-            child: IconButton(
-                hoverColor: MyColors.grey2,
-                iconSize: 26.0,
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.more_horiz,
-                  color: MyColors.black,
+          ? GestureDetector(
+            onTap: () {
+              // Handle trailing icon tap action
+              Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const VideoListPage(),
+                    ),
+                  );
+            },
+            child: Container(
+              width: 60,
+              height: 45,
+              alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  gradient: MyColors.customGradient,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child:const Icon(
+                    Icons.more_horiz,
+                    color: MyColors.black,
                 ),
               ),
           )

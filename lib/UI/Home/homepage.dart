@@ -1,10 +1,21 @@
-import 'package:fitlytic/UI/excercies/exercise_home.dart';
+import 'package:fitlytic/UI/Home/exercises/exercises_home.dart';
 import 'package:fitlytic/UI/Notifications/notifications.dart';
+import 'package:fitlytic/UI/excercies/exercise_home.dart';
 import 'package:fitlytic/constants/custom_colors.dart';
+import 'package:fitlytic/constants/exercises/exercises_home_constant.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final PageController _pageController = PageController();
+
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -96,72 +107,128 @@ class HomeScreen extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              const Text(
-                'Recommended Workouts',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        // Toggle to the other page when back button is pressed
+                        _currentPage = 0;
+                        // Also update the page controller to match
+                        _pageController.animateToPage(
+                          _currentPage,
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.easeInOut,
+                        );
+                      });
+                    },
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
+                  const Text(
+                    'Recommended Workouts',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        // Toggle to the other page when forward button is pressed
+                        _currentPage = 1;
+                        // Also update the page controller to match
+                        _pageController.animateToPage(
+                          _currentPage,
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.easeInOut,
+                        );
+                      });
+                    },
+                    icon: Icon(Icons.arrow_forward_ios),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
 
-              // Workout cards
-              _buildWorkoutCard(
-                key: const ValueKey('workout_3'),
-                title: 'Yoga Flow',
-                trainer: 'Emma Wilson',
-                duration: '20 min',
-                difficulty: 'easy',
-                image: 'assets/achievement/strength_2.jpg',
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExerciseListScreen(
-                      difficulty: 'Easy',
-                      exercises: easyExercises,
-                    ),
-                  ),
+// Workout cards
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.46,
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  children: [
+                    // Display plans page
+                    _categories_sections(),
+
+                    // Features comparison page
+                    _difficalties_secion(),
+                  ],
                 ),
               ),
-              _buildWorkoutCard(
-                key: const ValueKey('workout_1'),
-                title: 'HIIT Cardio Blast',
-                trainer: 'Sarah Johnson',
-                duration: '30 min',
-                difficulty: 'medium',
-                image: 'assets/achievement/strength_2.jpg',
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExerciseListScreen(
-                      difficulty: 'Medium',
-                      exercises: mediumExercises,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildWorkoutCard(
-                key: const ValueKey('workout_2'),
-                title: 'Strength Foundation',
-                trainer: 'Mike Chen',
-                duration: '45 min',
-                difficulty: 'hard',
-                image: 'assets/achievement/strength_2.jpg',
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExerciseListScreen(
-                      difficulty: 'Advanced',
-                      exercises: advancedExercises,
-                    ),
-                  ),
-                ),
-              ),
+
+              //old design
+              // _buildWorkoutCard(
+              //   key: const ValueKey('workout_3'),
+              //   title: 'Yoga Flow',
+              //   trainer: 'Emma Wilson',
+              //   duration: '20 min',
+              //   difficulty: 'easy',
+              //   image: 'assets/achievement/strength_2.jpg',
+              //   onTap: () => Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ExerciseListScreen(
+              //         difficulty: 'Easy',
+              //         exercises: easyExercises,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               // const SizedBox(height: 16),
-              
+              // _buildWorkoutCard(
+              //   key: const ValueKey('workout_1'),
+              //   title: 'HIIT Cardio Blast',
+              //   trainer: 'Sarah Johnson',
+              //   duration: '30 min',
+              //   difficulty: 'medium',
+              //   image: 'assets/achievement/strength_2.jpg',
+              //   onTap: () => Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ExerciseListScreen(
+              //         difficulty: 'Medium',
+              //         exercises: mediumExercises,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 16),
+              // _buildWorkoutCard(
+              //   key: const ValueKey('workout_2'),
+              //   title: 'Strength Foundation',
+              //   trainer: 'Mike Chen',
+              //   duration: '45 min',
+              //   difficulty: 'Hard',
+              //   image: 'assets/achievement/strength_2.jpg',
+              //   onTap: () => Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ExerciseListScreen(
+              //         difficulty: 'Advanced',
+              //         exercises: advancedExercises,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 16),
 
+              //oldest desgin
               // buildDifficultyCard(
               //   context,
               //   'Easy',
@@ -217,11 +284,91 @@ class HomeScreen extends StatelessWidget {
               //   ),
               // ),
               const SizedBox(
-                height: 110.0,
+                height: 50.0,
               )
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _categories_sections() {
+    return GridView.builder(
+      // physics:
+      //     const NeverScrollableScrollPhysics(), // Disable scrolling in GridView
+      shrinkWrap: true, // Make GridView take only the space it needs
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 1.5,
+      ),
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        return CategoryCard(category: categories[index]);
+      },
+    );
+  }
+
+  Widget _difficalties_secion() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildWorkoutCard(
+            key: const ValueKey('workout_3'),
+            title: 'Yoga Flow',
+            trainer: 'Emma Wilson',
+            duration: '20 min',
+            difficulty: 'easy',
+            image: 'assets/achievement/strength_2.jpg',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ExerciseListScreen(
+                  difficulty: 'Easy',
+                  exercises: easyExercises,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          _buildWorkoutCard(
+            key: const ValueKey('workout_1'),
+            title: 'HIIT Cardio Blast',
+            trainer: 'Sarah Johnson',
+            duration: '30 min',
+            difficulty: 'medium',
+            image: 'assets/achievement/strength_2.jpg',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ExerciseListScreen(
+                  difficulty: 'Medium',
+                  exercises: mediumExercises,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          _buildWorkoutCard(
+            key: const ValueKey('workout_2'),
+            title: 'Strength Foundation',
+            trainer: 'Mike Chen',
+            duration: '45 min',
+            difficulty: 'Hard',
+            image: 'assets/achievement/strength_2.jpg',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ExerciseListScreen(
+                  difficulty: 'Advanced',
+                  exercises: advancedExercises,
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -281,15 +428,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildWorkoutCard({
-    required Key key,
-    required String title,
-    required String trainer,
-    required String duration,
-    required String difficulty,
-    required String image,
-    void Function()? onTap
-  }) {
+  Widget _buildWorkoutCard(
+      {required Key key,
+      required String title,
+      required String trainer,
+      required String duration,
+      required String difficulty,
+      required String image,
+      void Function()? onTap}) {
     Color difficultyColor;
     if (difficulty == 'easy') {
       difficultyColor = Colors.green;
@@ -346,7 +492,7 @@ class HomeScreen extends StatelessWidget {
                           color: difficultyColor,
                         ),
                         child: Text(
-                          difficulty,
+                          difficulty.toUpperCase(),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
